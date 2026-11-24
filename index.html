@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TEFA Ice Tube – Es Batu Bersih, Antar Cepat</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== HEADER & NAVIGASI ===== -->
+<header><div class="bar">
+  <button class="logo" data-go="home">TEFA Ice Tube</button>
+  <nav aria-label="Menu utama">
+    <button data-go="home">Home</button>
+    <button data-go="katalog">Katalog & Harga</button>
+    <button data-go="pesan">Cara Pesan</button>
+    <button class="cartbtn" data-go="keranjang">Keranjang<b id="cc">0</b></button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+<!-- ===== HALAMAN HOME ===== -->
+<section id="home">
+  <div class="hero">
+    <div>
+      <h1>Es batu bersih, sampai sebelum sempat mencair.</h1>
+      <p>Dibuat dari air minum tersaring, dikemas tertutup, dan diantar untuk warung, kafe, catering, dan acara.</p>
+      <div class="cta">
+        <button class="btn" data-go="katalog">Lihat katalog harga</button>
+        <button class="btn alt" data-go="pesan">Cara pesan</button>
+      </div>
+    </div>
+    <div class="pile" aria-hidden="true"><div class="cube"></div><div class="cube"></div><div class="cube"></div></div>
+  </div>
+  <div class="sec">
+    <h2>Kenapa pesan di TEFA Ice Tube</h2>
+    <p class="lead">Tiga hal yang kami jaga di setiap pesanan.</p>
+    <div class="grid">
+      <div class="card feat"><h3>Air tersaring</h3><p>Es dibuat dari air minum yang disaring dan diuji rutin, aman untuk langsung diminum.</p></div>
+      <div class="card feat"><h3>Antar dalam 60 menit</h3><p>Pesanan di dalam area layanan diantar dengan boks pendingin agar tidak mencair di jalan dalam radius 3 Km</p></div>
+      <div class="card feat"><h3>Harga jelas</h3><p>Harga per ukuran tercantum di katalog. Gratis ongkir untuk pesanan mulai 20 kg.</p></div>
+    </div>
+  </div>
+  <div class="sec">
+    <h2>Kata pelanggan</h2>
+    <p class="lead">Ulasan contoh dari pelanggan tetap.</p>
+    <div class="grid">
+      <div class="card quote"><p>Es datang tepat waktu dan tidak cepat cair. Stok warung aman tiap akhir pekan.</p><small>Bu Rina, pemilik warung es teh</small></div>
+      <div class="card quote"><p>Es cube-nya bening dan awet, kopi dingin di kafe jadi tidak encer.</p><small>Dimas, barista</small></div>
+      <div class="card quote"><p>Pesan 50 kg untuk hajatan, sampai rapi dalam boks pendingin.</p><small>Pak Hendra, penyedia catering</small></div>
+    </div>
+  </div>
+  <div class="sec">
+    <h2>Pertanyaan umum</h2>
+    <p class="lead">Jawaban singkat sebelum kamu memesan.</p>
+    <details><summary>Apakah es aman langsung diminum?</summary><p>Ya, es dibuat dari air minum tersaring dan dikemas dalam plastik food grade.</p></details>
+    <details><summary>Berapa minimal pemesanan?</summary><p>Tidak ada minimum. Gratis ongkir untuk pesanan mulai 20 kg.</p></details>
+    <details><summary>Bisa pesan untuk besok pagi?</summary><p>Bisa. Tulis jam antar yang kamu mau di kolom catatan keranjang.</p></details>
+    <details><summary>Bagaimana cara membayar?</summary><p>Tunai, transfer, atau QRIS saat es tiba.</p></details>
+  </div>
+</section>
+
+<!-- ===== HALAMAN KATALOG ===== -->
+<section id="katalog" hidden>
+  <div class="sec">
+    <h2>Katalog & harga</h2>
+    <p class="lead">Pilih ukuran, lalu tekan Tambah untuk memasukkan ke keranjang. Harga di halaman ini contoh.</p>
+    <input class="search" id="q" type="search" placeholder="Cari es, misalnya kristal" aria-label="Cari es">
+    <div class="filters" id="filters" role="group" aria-label="Filter jenis es"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <div class="sec">
+    <h2>Harga grosir</h2>
+    <p class="lead">Untuk pesanan rutin, harga per kg turun mengikuti jumlah.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Jumlah pesanan</th><th>Es kristal / kg</th><th>Es cube / kg</th></tr></thead>
+      <tbody>
+        <tr><td>20 – 49 kg</td><td>Rp3.200</td><td>Rp4.800</td></tr>
+        <tr><td>50 – 99 kg</td><td>Rp3.000</td><td>Rp4.500</td></tr>
+        <tr><td>100 kg ke atas</td><td>Rp2.800</td><td>Rp4.200</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ===== HALAMAN CARA PESAN ===== -->
+<section id="pesan" hidden>
+  <div class="sec two">
+    <div>
+      <h2>Cara pesan</h2>
+      <p class="lead">Tidak perlu daftar akun.</p>
+      <ol class="steps">
+        <li><div><strong>Pilih es di katalog</strong><br><span style="color:var(--mut)">Tentukan jenis dan ukuran.</span></div></li>
+        <li><div><strong>Kirim pesanan lewat WhatsApp</strong><br><span style="color:var(--mut)">Sebutkan alamat dan jam antar.</span></div></li>
+        <li><div><strong>Bayar saat es tiba</strong><br><span style="color:var(--mut)">Tunai, transfer, atau QRIS.</span></div></li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Kontak & jam layanan</h3>
+      <p>Setiap hari, 06.00 – 21.00</p>
+      <p>WhatsApp: 0812-3456-7890<br>Alamat: Jl. Contoh No. 12 (data contoh)</p>
+      <a class="btn" href="https://wa.me/6281234567890?text=Halo%20TEFA%20Ice%20Tube%2C%20saya%20mau%20pesan%20es%20batu." target="_blank" rel="noopener">Chat WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HALAMAN KERANJANG ===== -->
+<section id="keranjang" hidden>
+  <div class="sec">
+    <h2>Keranjang</h2>
+    <p class="lead">Cek pesananmu, isi data antar, lalu kirim lewat WhatsApp.</p>
+    <div id="cl"></div>
+    <div id="cf">
+      <div class="total"><span>Total</span><span id="ct">Rp0</span></div>
+      <div class="fld">
+        <input id="nm" placeholder="Nama" aria-label="Nama">
+        <input id="ad" placeholder="Alamat antar" aria-label="Alamat antar">
+        <input id="nt" placeholder="Catatan, misalnya jam antar" aria-label="Catatan">
+      </div>
+      <a class="btn" id="send" target="_blank" rel="noopener" href="#">Kirim pesanan via WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap"><h2>IceTube</h2>
+    <p>Es batu bersih dan berkualitas untuk warung, kafe,catering, dan acara.</p>
+    © 2026 TEFA Ice Tube. Semua hak cipta dilindungi.</div>
+
+  <div class="yaw"></div>
+</footer>
+
+<!-- Script dimuat paling akhir agar semua elemen sudah tersedia -->
+<script src="script.js"></script>
+</body>
+</html>

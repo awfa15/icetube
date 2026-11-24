@@ -1,0 +1,677 @@
+/* ==========================================================================
+   TEFA Ice Tube - style.css
+
+   Daftar isi:
+   1. BASE      : warna, tipografi, header, navigasi, tombol, footer, notifikasi
+   2. HOME      : hero, animasi kubus es, ulasan pelanggan, FAQ
+   3. KATALOG   : pencarian, filter, kartu produk, bentuk es, tabel grosir
+   4. CARA PESAN: langkah pemesanan dan kartu kontak
+   5. KERANJANG : daftar item, jumlah, total, form data pemesan
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. BASE
+   ========================================================================== */
+
+/* ----- Warna tema (mode terang, bawaan) ----- */
+:root {
+  --ink:  #0B3040;  /* warna teks utama */
+  --bg:   #F2FAFB;  /* latar halaman */
+  --card: #fff;     /* latar kartu */
+  --ice:  #CDEBF1;  /* biru es muda (aksen lembut) */
+  --gl:   #1F7F9C;  /* biru utama (tombol, aksen) */
+  --gl2:  #14607a;  /* biru utama saat di-hover */
+  --mut:  #4d6b78;  /* teks sekunder / redup */
+  --line: #cfe3e9;  /* garis pembatas */
+  --bt:   #fff;     /* teks di atas warna biru */
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ----- Mode gelap: otomatis mengikuti pengaturan perangkat ----- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink:  #E6F5F8;
+    --bg:   #08222D;
+    --card: #0F3444;
+    --ice:  #15485c;
+    --gl:   #5CC3E0;
+    --gl2:  #8ad6ec;
+    --mut:  #9dbcc7;
+    --line: #1d4b5e;
+    --bt:   #062028;
+  }
+}
+
+/* ----- Mode gelap: dipaksa lewat atribut data-theme="dark" ----- */
+:root[data-theme="dark"] {
+  --ink:  #E6F5F8;
+  --bg:   #08222D;
+  --card: #0F3444;
+  --ice:  #15485c;
+  --gl:   #5CC3E0;
+  --gl2:  #8ad6ec;
+  --mut:  #9dbcc7;
+  --line: #1d4b5e;
+  --bt:   #062028;
+}
+
+/* ----- Reset dan elemen dasar ----- */
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1rem/1.6 Figtree, system-ui, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: "Bricolage Grotesque", Figtree, system-ui, sans-serif;
+  line-height: 1.1;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gl);
+  outline-offset: 3px;
+}
+
+/* ----- Pembungkus konten (lebar maksimal halaman) ----- */
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ----- Header (menempel di atas saat scroll) ----- */
+header {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.logo {
+  font: 800 1.3rem "Bricolage Grotesque", sans-serif;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ----- Navigasi ----- */
+nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+nav button {
+  background: none;
+  border: 0;
+  color: var(--mut);
+  font: 600 .95rem Figtree, sans-serif;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* menu yang sedang aktif */
+nav button[aria-current=page] {
+  background: var(--ice);
+  color: var(--ink);
+}
+
+/* lencana jumlah item di tombol Keranjang */
+.cartbtn b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--gl);
+  color: var(--bt);
+  font-size: .75rem;
+  margin-left: 4px;
+}
+
+/* ----- Tombol ----- */
+.btn {
+  display: inline-block;
+  background: var(--gl);
+  color: var(--bt);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn:hover {
+  background: var(--gl2);
+}
+
+/* tombol berbingkai (sekunder) */
+.btn.alt {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--gl);
+}
+
+.btn.alt:hover {
+  background: var(--ice);
+}
+
+/* tombol nonaktif (misalnya kirim WhatsApp saat keranjang kosong) */
+.btn[aria-disabled=true] {
+  opacity: .5;
+  pointer-events: none;
+}
+
+/* ----- Halaman (section) dan judul bagian ----- */
+section[hidden] {
+  display: none;
+}
+
+.sec {
+  padding: 36px 0;
+}
+
+.sec h2 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  margin-bottom: 8px;
+}
+
+.lead {
+  color: var(--mut);
+  margin: 0 0 24px;
+  max-width: 56ch;
+}
+
+/* ----- Grid dan kartu umum ----- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+}
+
+.card p {
+  margin: 0 0 14px;
+  color: var(--mut);
+  font-size: .95rem;
+}
+
+/* kartu keunggulan dengan sudut tidak simetris */
+.feat {
+  border-radius: 6px 26px 6px 26px;
+}
+
+/* ----- Footer ----- */
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
+  padding: 24px 0;
+  color: var(--mut);
+  font-size: .9rem;
+}
+
+/* ----- Notifikasi kecil (toast) di bawah layar ----- */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+  z-index: 9;
+}
+
+#toast.on {
+  opacity: 1;
+}
+
+
+/* ==========================================================================
+   2. HOME
+   ========================================================================== */
+
+/* ----- Hero (bagian paling atas) ----- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 32px;
+  align-items: center;
+  padding: 56px 0 40px;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: var(--mut);
+  max-width: 34ch;
+  margin: 18px 0 26px;
+}
+
+.cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ----- Tumpukan kubus es (hiasan hero) ----- */
+.pile {
+  position: relative;
+  height: 320px;
+}
+
+.cube {
+  position: absolute;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,.95), var(--ice) 60%, #9fd5e2);
+  border: 2px solid rgba(255,255,255,.8);
+  box-shadow: inset -10px -12px 24px rgba(31,127,156,.25);
+  animation: drop .9s cubic-bezier(.3,1.4,.5,1) both;
+}
+
+.cube:nth-child(1) {
+  width: 150px;
+  height: 150px;
+  left: 6%;
+  top: 38%;
+  transform: rotate(-9deg);
+}
+
+.cube:nth-child(2) {
+  width: 130px;
+  height: 130px;
+  left: 44%;
+  top: 8%;
+  transform: rotate(12deg);
+  animation-delay: .15s;
+}
+
+.cube:nth-child(3) {
+  width: 110px;
+  height: 110px;
+  left: 52%;
+  top: 56%;
+  transform: rotate(-4deg);
+  animation-delay: .3s;
+}
+
+/* animasi kubus jatuh dari atas */
+@keyframes drop {
+  from {
+    opacity: 0;
+    translate: 0 -60px;
+  }
+}
+
+/* hormati pengguna yang mematikan animasi */
+@media (prefers-reduced-motion: reduce) {
+  .cube {
+    animation: none;
+  }
+}
+
+/* ----- Ulasan pelanggan ----- */
+.quote p {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.quote small {
+  color: var(--mut);
+}
+
+/* ----- FAQ (pertanyaan umum) ----- */
+details {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+}
+
+summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+details p {
+  margin: 10px 0 0;
+  color: var(--mut);
+}
+
+/* ----- Tampilan HP: hero jadi satu kolom ----- */
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 32px;
+  }
+
+  .pile {
+    height: 240px;
+  }
+}
+
+
+/* ==========================================================================
+   3. KATALOG
+   ========================================================================== */
+
+/* ----- Filter jenis es dan chip ukuran ----- */
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.filters button,
+.chip {
+  font: 600 .9rem Figtree, sans-serif;
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+
+/* filter / ukuran yang sedang dipilih */
+.filters button[aria-pressed=true],
+.chip.on {
+  background: var(--gl);
+  border-color: var(--gl);
+  color: var(--bt);
+}
+
+/* ----- Ilustrasi bentuk es di kartu produk ----- */
+.shape {
+  width: 88px;
+  height: 88px;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, #fff, var(--ice) 65%, #9fd5e2);
+  border: 2px solid #fff;
+  box-shadow: inset -6px -8px 16px rgba(31,127,156,.22);
+}
+
+/* kristal: bulat dengan lubang di tengah */
+.s-kristal {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--card) 0 13px, transparent 14px),
+    linear-gradient(135deg, #fff, var(--ice) 65%, #9fd5e2);
+}
+
+/* cube: kotak sedikit miring */
+.s-cube {
+  border-radius: 14px;
+  transform: rotate(-8deg);
+}
+
+/* bola: bulat dengan kilau */
+.s-bola {
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #fff 0 12%, var(--ice) 45%, #8fcddc);
+}
+
+/* balok: persegi panjang tegak */
+.s-balok {
+  width: 60px;
+  height: 88px;
+  border-radius: 8px;
+}
+
+/* serut: bulat dengan butiran titik */
+.s-serut {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--gl) 2.5px, transparent 3.5px) 0 0 / 15px 15px,
+    var(--ice);
+  box-shadow: none;
+}
+
+/* ----- Pilihan ukuran dan baris harga + tombol Tambah ----- */
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.buy {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.buy strong {
+  font: 800 1.3rem "Bricolage Grotesque", sans-serif;
+}
+
+.buy .btn {
+  padding: 9px 18px;
+}
+
+/* ----- Tabel harga grosir ----- */
+.tw {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 460px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+th {
+  background: var(--ice);
+}
+
+/* ----- Kolom pencarian ----- */
+.search {
+  width: 100%;
+  max-width: 360px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  margin-bottom: 14px;
+}
+
+
+/* ==========================================================================
+   4. CARA PESAN
+   ========================================================================== */
+
+/* ----- Daftar langkah bernomor ----- */
+ol.steps {
+  list-style: none;
+  counter-reset: s;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+ol.steps li {
+  counter-increment: s;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+/* lingkaran nomor di depan setiap langkah */
+ol.steps li::before {
+  content: counter(s);
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gl);
+  color: var(--bt);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+/* ----- Tata letak dua kolom (langkah + kartu kontak) ----- */
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 760px) {
+  .two {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
+   5. KERANJANG
+   ========================================================================== */
+
+/* ----- Baris item di keranjang ----- */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.row .nm {
+  flex: 1 1 180px;
+}
+
+/* tombol tambah / kurangi jumlah */
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* tombol hapus item */
+.rm {
+  background: none;
+  border: 0;
+  color: var(--mut);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* ----- Total harga ----- */
+.total {
+  display: flex;
+  justify-content: space-between;
+  font: 800 1.4rem "Bricolage Grotesque", sans-serif;
+  padding: 16px 0;
+}
+
+/* ----- Form data pemesan ----- */
+.fld {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.fld input,
+.fld textarea {
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  width: 100%;
+}
