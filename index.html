@@ -1,108 +1,159 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TEFA Ice Tube – Es Batu Bersih, Antar Cepat</title>
+
+<!-- Tema terang/gelap mengikuti pengaturan perangkat (dijalankan lebih awal agar layar tidak berkedip) -->
+<script>document.documentElement.setAttribute("data-bs-theme", window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");</script>
+
+<!-- Font Google -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<!-- Bootstrap 5 (CSS) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- CSS buatan sendiri: dimuat SETELAH Bootstrap agar bisa menimpa warna dan gaya bawaannya -->
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ===== HEADER & NAVIGASI ===== -->
-<header><div class="bar">
-  <button class="logo" data-go="home">TEFA Ice Tube</button>
-  <nav aria-label="Menu utama">
-    <button data-go="home">Home</button>
-    <button data-go="katalog">Katalog & Harga</button>
-    <button data-go="pesan">Cara Pesan</button>
-    <button class="cartbtn" data-go="keranjang">Keranjang<b id="cc">0</b></button>
-  </nav>
-</div></header>
+<!-- ===== HEADER & NAVIGASI (Bootstrap navbar) ===== -->
+<header class="site-header">
+  <nav class="navbar navbar-expand-md" aria-label="Menu utama">
+    <div class="container">
+      <button class="navbar-brand logo" type="button" data-go="home">TEFA Ice Tube</button>
 
-<main class="wrap">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Buka menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto gap-md-1">
+          <li class="nav-item"><button class="nav-link rounded-pill px-3" data-go="home">Home</button></li>
+          <li class="nav-item"><button class="nav-link rounded-pill px-3" data-go="katalog">Katalog &amp; Harga</button></li>
+          <li class="nav-item"><button class="nav-link rounded-pill px-3" data-go="pesan">Cara Pesan</button></li>
+          <li class="nav-item"><button class="nav-link rounded-pill px-3 cartbtn" data-go="keranjang">Keranjang <span class="badge rounded-pill" id="cc">0</span></button></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
 
 <!-- ===== HALAMAN HOME ===== -->
 <section id="home">
-  <div class="hero">
-    <div>
+  <div class="row align-items-center g-4 hero">
+    <div class="col-md-6">
       <h1>Es batu bersih, sampai sebelum sempat mencair.</h1>
       <p>Dibuat dari air minum tersaring, dikemas tertutup, dan diantar untuk warung, kafe, catering, dan acara.</p>
-      <div class="cta">
-        <button class="btn" data-go="katalog">Lihat katalog harga</button>
-        <button class="btn alt" data-go="pesan">Cara pesan</button>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary rounded-pill px-4" data-go="katalog">Lihat katalog harga</button>
+        <button class="btn btn-outline-primary btn-alt rounded-pill px-4" data-go="pesan">Cara pesan</button>
       </div>
     </div>
-    <div class="pile" aria-hidden="true"><div class="cube"></div><div class="cube"></div><div class="cube"></div></div>
+    <div class="col-md-6">
+      <div class="pile" aria-hidden="true"><div class="cube"></div><div class="cube"></div><div class="cube"></div></div>
+    </div>
   </div>
+
   <div class="sec">
     <h2>Kenapa pesan di TEFA Ice Tube</h2>
     <p class="lead">Tiga hal yang kami jaga di setiap pesanan.</p>
-    <div class="grid">
-      <div class="card feat"><h3>Air tersaring</h3><p>Es dibuat dari air minum yang disaring dan diuji rutin, aman untuk langsung diminum.</p></div>
-      <div class="card feat"><h3>Antar dalam 60 menit</h3><p>Pesanan di dalam area layanan diantar dengan boks pendingin agar tidak mencair di jalan dalam radius 3 Km</p></div>
-      <div class="card feat"><h3>Harga jelas</h3><p>Harga per ukuran tercantum di katalog. Gratis ongkir untuk pesanan mulai 20 kg.</p></div>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card feat h-100"><div class="card-body"><h3>Air tersaring</h3><p>Es dibuat dari air minum yang disaring dan diuji rutin, aman untuk langsung diminum.</p></div></div></div>
+      <div class="col-md-4"><div class="card feat h-100"><div class="card-body"><h3>Antar dalam 60 menit</h3><p>Pesanan di dalam area layanan diantar dengan boks pendingin agar tidak mencair di jalan.</p></div></div></div>
+      <div class="col-md-4"><div class="card feat h-100"><div class="card-body"><h3>Harga jelas</h3><p>Harga per ukuran tercantum di katalog. Gratis ongkir untuk pesanan mulai 20 kg.</p></div></div></div>
     </div>
   </div>
+
   <div class="sec">
     <h2>Kata pelanggan</h2>
     <p class="lead">Ulasan contoh dari pelanggan tetap.</p>
-    <div class="grid">
-      <div class="card quote"><p>Es datang tepat waktu dan tidak cepat cair. Stok warung aman tiap akhir pekan.</p><small>Bu Rina, pemilik warung es teh</small></div>
-      <div class="card quote"><p>Es cube-nya bening dan awet, kopi dingin di kafe jadi tidak encer.</p><small>Dimas, barista</small></div>
-      <div class="card quote"><p>Pesan 50 kg untuk hajatan, sampai rapi dalam boks pendingin.</p><small>Pak Hendra, penyedia catering</small></div>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card quote h-100"><div class="card-body"><p>Es datang tepat waktu dan tidak cepat cair. Stok warung aman tiap akhir pekan.</p><small>Bu Rina, pemilik warung es teh</small></div></div></div>
+      <div class="col-md-4"><div class="card quote h-100"><div class="card-body"><p>Es cube-nya bening dan awet, kopi dingin di kafe jadi tidak encer.</p><small>Dimas, barista</small></div></div></div>
+      <div class="col-md-4"><div class="card quote h-100"><div class="card-body"><p>Pesan 50 kg untuk hajatan, sampai rapi dalam boks pendingin.</p><small>Pak Hendra, penyedia catering</small></div></div></div>
     </div>
   </div>
-  <div class="sec">
+
+  <!-- FAQ memakai Bootstrap accordion; id "faq-section" jadi tujuan tautan "Pertanyaan Umum" di footer -->
+  <div class="sec" id="faq-section">
     <h2>Pertanyaan umum</h2>
     <p class="lead">Jawaban singkat sebelum kamu memesan.</p>
-    <details><summary>Apakah es aman langsung diminum?</summary><p>Ya, es dibuat dari air minum tersaring dan dikemas dalam plastik food grade.</p></details>
-    <details><summary>Berapa minimal pemesanan?</summary><p>Tidak ada minimum. Gratis ongkir untuk pesanan mulai 20 kg.</p></details>
-    <details><summary>Bisa pesan untuk besok pagi?</summary><p>Bisa. Tulis jam antar yang kamu mau di kolom catatan keranjang.</p></details>
-    <details><summary>Bagaimana cara membayar?</summary><p>Tunai, transfer, atau QRIS saat es tiba.</p></details>
+    <div class="accordion" id="faq">
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">Apakah es aman langsung diminum?</button></h3>
+        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faq"><div class="accordion-body">Ya, es dibuat dari air minum tersaring dan dikemas dalam plastik food grade.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">Berapa minimal pemesanan?</button></h3>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faq"><div class="accordion-body">Tidak ada minimum. Gratis ongkir untuk pesanan mulai 20 kg.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Bisa pesan untuk besok pagi?</button></h3>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faq"><div class="accordion-body">Bisa. Tulis jam antar yang kamu mau di kolom catatan keranjang.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Bagaimana cara membayar?</button></h3>
+        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faq"><div class="accordion-body">Tunai, transfer, atau QRIS saat es tiba.</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ===== HALAMAN KATALOG ===== -->
 <section id="katalog" hidden>
   <div class="sec">
-    <h2>Katalog & harga</h2>
+    <h2>Katalog &amp; harga</h2>
     <p class="lead">Pilih ukuran, lalu tekan Tambah untuk memasukkan ke keranjang. Harga di halaman ini contoh.</p>
-    <input class="search" id="q" type="search" placeholder="Cari es, misalnya kristal" aria-label="Cari es">
-    <div class="filters" id="filters" role="group" aria-label="Filter jenis es"></div>
-    <div class="grid" id="grid"></div>
+    <input class="form-control rounded-pill search mb-3" id="q" type="search" placeholder="Cari es, misalnya kristal" aria-label="Cari es">
+    <div class="filters d-flex flex-wrap gap-2 mb-4" id="filters" role="group" aria-label="Filter jenis es"></div>
+    <!-- Kartu produk diisi oleh script.js -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3" id="grid"></div>
   </div>
+
   <div class="sec">
     <h2>Harga grosir</h2>
     <p class="lead">Untuk pesanan rutin, harga per kg turun mengikuti jumlah.</p>
-    <div class="tw"><table>
-      <thead><tr><th>Jumlah pesanan</th><th>Es kristal / kg</th><th>Es cube / kg</th></tr></thead>
-      <tbody>
-        <tr><td>20 – 49 kg</td><td>Rp3.200</td><td>Rp4.800</td></tr>
-        <tr><td>50 – 99 kg</td><td>Rp3.000</td><td>Rp4.500</td></tr>
-        <tr><td>100 kg ke atas</td><td>Rp2.800</td><td>Rp4.200</td></tr>
-      </tbody>
-    </table></div>
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead>
+          <tr><th scope="col">Jumlah pesanan</th><th scope="col">Es kristal / kg</th><th scope="col">Es cube / kg</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>20 – 49 kg</td><td>Rp3.200</td><td>Rp4.800</td></tr>
+          <tr><td>50 – 99 kg</td><td>Rp3.000</td><td>Rp4.500</td></tr>
+          <tr><td>100 kg ke atas</td><td>Rp2.800</td><td>Rp4.200</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
 <!-- ===== HALAMAN CARA PESAN ===== -->
 <section id="pesan" hidden>
-  <div class="sec two">
-    <div>
-      <h2>Cara pesan</h2>
-      <p class="lead">Tidak perlu daftar akun.</p>
-      <ol class="steps">
-        <li><div><strong>Pilih es di katalog</strong><br><span style="color:var(--mut)">Tentukan jenis dan ukuran.</span></div></li>
-        <li><div><strong>Kirim pesanan lewat WhatsApp</strong><br><span style="color:var(--mut)">Sebutkan alamat dan jam antar.</span></div></li>
-        <li><div><strong>Bayar saat es tiba</strong><br><span style="color:var(--mut)">Tunai, transfer, atau QRIS.</span></div></li>
-      </ol>
-    </div>
-    <div class="card">
-      <h3>Kontak & jam layanan</h3>
-      <p>Setiap hari, 06.00 – 21.00</p>
-      <p>WhatsApp: 0812-3456-7890<br>Alamat: Jl. Contoh No. 12 (data contoh)</p>
-      <a class="btn" href="https://wa.me/6281234567890?text=Halo%20TEFA%20Ice%20Tube%2C%20saya%20mau%20pesan%20es%20batu." target="_blank" rel="noopener">Chat WhatsApp</a>
+  <div class="sec">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <h2>Cara pesan</h2>
+        <p class="lead">Tidak perlu daftar akun.</p>
+        <ol class="steps">
+          <li><div><strong>Pilih es di katalog</strong><br><span class="text-mut">Tentukan jenis dan ukuran.</span></div></li>
+          <li><div><strong>Kirim pesanan lewat WhatsApp</strong><br><span class="text-mut">Sebutkan alamat dan jam antar.</span></div></li>
+          <li><div><strong>Bayar saat es tiba</strong><br><span class="text-mut">Tunai, transfer, atau QRIS.</span></div></li>
+        </ol>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h3>Kontak &amp; jam layanan</h3>
+            <p>Setiap hari, 06.00 – 21.00</p>
+            <p>WhatsApp: 0812-3456-7890<br>Alamat: Jl. Contoh No. 12 (data contoh)</p>
+            <a class="btn btn-primary rounded-pill align-self-start" href="https://wa.me/6281234567890?text=Halo%20TEFA%20Ice%20Tube%2C%20saya%20mau%20pesan%20es%20batu." target="_blank" rel="noopener">Chat WhatsApp</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -114,29 +165,83 @@
     <p class="lead">Cek pesananmu, isi data antar, lalu kirim lewat WhatsApp.</p>
     <div id="cl"></div>
     <div id="cf">
-      <div class="total"><span>Total</span><span id="ct">Rp0</span></div>
-      <div class="fld">
-        <input id="nm" placeholder="Nama" aria-label="Nama">
-        <input id="ad" placeholder="Alamat antar" aria-label="Alamat antar">
-        <input id="nt" placeholder="Catatan, misalnya jam antar" aria-label="Catatan">
+      <div class="total d-flex justify-content-between py-3"><span>Total</span><span id="ct">Rp0</span></div>
+      <div class="d-grid gap-2 mb-3">
+        <input class="form-control rounded-3" id="nm" placeholder="Nama" aria-label="Nama">
+        <input class="form-control rounded-3" id="ad" placeholder="Alamat antar" aria-label="Alamat antar">
+        <input class="form-control rounded-3" id="nt" placeholder="Catatan, misalnya jam antar" aria-label="Catatan">
       </div>
-      <a class="btn" id="send" target="_blank" rel="noopener" href="#">Kirim pesanan via WhatsApp</a>
+      <a class="btn btn-primary rounded-pill" id="send" target="_blank" rel="noopener" href="#">Kirim pesanan via WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HALAMAN SYARAT & KETENTUAN (tujuan tautan footer; isinya contoh) ===== -->
+<section id="syarat" hidden>
+  <div class="sec">
+    <h2>Syarat &amp; ketentuan</h2>
+    <p class="lead">Ketentuan singkat pemesanan. Isi halaman ini contoh dan bisa disesuaikan.</p>
+    <div class="row g-3">
+      <div class="col-md-6"><div class="card h-100"><div class="card-body"><h3>Pemesanan</h3><p>Pesanan dikirim lewat WhatsApp dengan menyebut jenis es, ukuran, alamat, dan jam antar. Tidak ada minimum pemesanan.</p></div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body"><h3>Pengantaran</h3><p>Pesanan di dalam area layanan diantar dengan boks pendingin, sekitar 60 menit. Gratis ongkir untuk pesanan mulai 20 kg.</p></div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body"><h3>Pembayaran</h3><p>Pembayaran dilakukan saat es tiba, bisa tunai, transfer, atau QRIS.</p></div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-body"><h3>Keluhan</h3><p>Jika ada masalah pada pesanan, hubungi WhatsApp kami pada jam layanan (06.00 – 21.00) agar segera dibantu.</p></div></div></div>
     </div>
   </div>
 </section>
 
 </main>
-<div id="toast" role="status" aria-live="polite"></div>
-<!-- ===== FOOTER ===== -->
-<footer>
-  <div class="wrap"><h2>IceTube</h2>
-    <p>Es batu bersih dan berkualitas untuk warung, kafe,catering, dan acara.</p>
-    © 2026 TEFA Ice Tube. Semua hak cipta dilindungi.</div>
 
-  <div class="yaw"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ===== FOOTER: alamat dan tautan ke halaman lain ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4 py-5">
+
+      <!-- Kolom 1: identitas + alamat -->
+      <div class="col-lg-6">
+        <div class="footer-brand">TEFA Ice Tube</div>
+        <p class="footer-desc">Es batu bersih dan berkualitas untuk warung, kafe, catering, dan acara.</p>
+        <address class="footer-address">
+          <strong>Alamat</strong><br>
+          Jl. Contoh No. 12 (data contoh)<br>
+          Buka setiap hari, 06.00 – 21.00<br>
+          WhatsApp: <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">0812-3456-7890</a>
+        </address>
+      </div>
+
+      <!-- Kolom 2: tautan layanan -->
+      <div class="col-6 col-lg-3">
+        <div class="footer-title">Layanan</div>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#katalog" data-go="katalog">Katalog &amp; Harga</a></li>
+          <li><a href="#pesan" data-go="pesan">Cara Pesan</a></li>
+          <li><a href="#keranjang" data-go="keranjang">Keranjang</a></li>
+        </ul>
+      </div>
+
+      <!-- Kolom 3: tautan bantuan -->
+      <div class="col-6 col-lg-3">
+        <div class="footer-title">Bantuan</div>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#faq-section" data-go="home" data-scroll="faq-section">Pertanyaan Umum</a></li>
+          <li><a href="#syarat" data-go="syarat">Syarat &amp; Ketentuan</a></li>
+          <li><a href="#pesan" data-go="pesan">Kontak</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Baris paling bawah -->
+    <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between gap-2 py-3">
+      <small>© 2026 TEFA Ice Tube. Halaman contoh: nama, harga, dan kontak hanya ilustrasi.</small>
+      <small>Dibuat dari air minum tersaring • Dikemas tertutup • Diantar dengan boks pendingin</small>
+    </div>
+  </div>
 </footer>
 
-<!-- Script dimuat paling akhir agar semua elemen sudah tersedia -->
+<!-- Bootstrap 5 (JS) untuk navbar HP dan accordion FAQ, lalu script buatan sendiri -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

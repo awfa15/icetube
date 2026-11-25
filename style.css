@@ -1,53 +1,57 @@
 /* ==========================================================================
-   TEFA Ice Tube - style.css
+   TEFA Ice Tube (versi Bootstrap) - style.css
+
+   File ini dimuat SETELAH Bootstrap. Isinya hanya:
+   - warna tema dan penyesuaian variabel Bootstrap
+   - komponen Bootstrap yang diberi tampilan khas TEFA Ice Tube
+   - bagian yang tidak ada di Bootstrap (kubus es, bentuk es, langkah bernomor)
 
    Daftar isi:
-   1. BASE      : warna, tipografi, header, navigasi, tombol, footer, notifikasi
-   2. HOME      : hero, animasi kubus es, ulasan pelanggan, FAQ
-   3. KATALOG   : pencarian, filter, kartu produk, bentuk es, tabel grosir
-   4. CARA PESAN: langkah pemesanan dan kartu kontak
-   5. KERANJANG : daftar item, jumlah, total, form data pemesan
+   1. TEMA       : warna terang/gelap + variabel Bootstrap
+   2. BASE       : tipografi, header, navbar, tombol, kartu, form, tabel, toast
+   3. HOME       : hero, kubus es, ulasan, FAQ (accordion)
+   4. KATALOG    : filter, bentuk es, harga
+   5. CARA PESAN : langkah bernomor
+   6. KERANJANG  : baris item, jumlah, total
+   7. FOOTER
    ========================================================================== */
 
 
 /* ==========================================================================
-   1. BASE
+   1. TEMA
    ========================================================================== */
 
-/* ----- Warna tema (mode terang, bawaan) ----- */
+/* Area aman (HP berponi) */
 :root {
-  --ink:  #0B3040;  /* warna teks utama */
-  --bg:   #F2FAFB;  /* latar halaman */
-  --card: #fff;     /* latar kartu */
-  --ice:  #CDEBF1;  /* biru es muda (aksen lembut) */
-  --gl:   #1F7F9C;  /* biru utama (tombol, aksen) */
-  --gl2:  #14607a;  /* biru utama saat di-hover */
-  --mut:  #4d6b78;  /* teks sekunder / redup */
-  --line: #cfe3e9;  /* garis pembatas */
-  --bt:   #fff;     /* teks di atas warna biru */
-
-  box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* ----- Mode gelap: otomatis mengikuti pengaturan perangkat ----- */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ink:  #E6F5F8;
-    --bg:   #08222D;
-    --card: #0F3444;
-    --ice:  #15485c;
-    --gl:   #5CC3E0;
-    --gl2:  #8ad6ec;
-    --mut:  #9dbcc7;
-    --line: #1d4b5e;
-    --bt:   #062028;
-  }
+/* ----- Mode terang ----- */
+:root,
+[data-bs-theme="light"] {
+  --ink:  #0B3040;  /* teks utama */
+  --bg:   #F2FAFB;  /* latar halaman */
+  --card: #fff;     /* latar kartu */
+  --ice:  #CDEBF1;  /* biru es muda */
+  --gl:   #1F7F9C;  /* biru utama */
+  --gl2:  #14607a;  /* biru utama saat hover */
+  --mut:  #4d6b78;  /* teks redup */
+  --line: #cfe3e9;  /* garis pembatas */
+  --bt:   #fff;     /* teks di atas warna biru */
+
+  /* Menyambungkan warna di atas ke variabel Bootstrap */
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--ink);
+  --bs-body-font-family: Figtree, system-ui, sans-serif;
+  --bs-body-line-height: 1.6;
+  --bs-border-color: var(--line);
+  --bs-primary: #1F7F9C;
+  --bs-primary-rgb: 31, 127, 156;
 }
 
-/* ----- Mode gelap: dipaksa lewat atribut data-theme="dark" ----- */
-:root[data-theme="dark"] {
+/* ----- Mode gelap (diatur otomatis lewat atribut data-bs-theme="dark") ----- */
+[data-bs-theme="dark"] {
   --ink:  #E6F5F8;
   --bg:   #08222D;
   --card: #0F3444;
@@ -57,26 +61,27 @@
   --mut:  #9dbcc7;
   --line: #1d4b5e;
   --bt:   #062028;
+
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--ink);
+  --bs-border-color: var(--line);
+  --bs-primary: #5CC3E0;
+  --bs-primary-rgb: 92, 195, 224;
 }
 
-/* ----- Reset dan elemen dasar ----- */
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+
+/* ----- Elemen dasar ----- */
 html {
   scroll-padding-top: env(safe-area-inset-top, 0px);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font: 400 1rem/1.6 Figtree, system-ui, sans-serif;
-}
-
 h1, h2, h3 {
   font-family: "Bricolage Grotesque", Figtree, system-ui, sans-serif;
+  font-weight: 800;
   line-height: 1.1;
   margin: 0;
 }
@@ -90,30 +95,46 @@ a {
   outline-offset: 3px;
 }
 
-/* ----- Pembungkus konten (lebar maksimal halaman) ----- */
-.wrap {
+/* lebar konten maksimal (menimpa lebar bawaan container Bootstrap) */
+.container {
   max-width: 1040px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
-/* ----- Header (menempel di atas saat scroll) ----- */
-header {
+/* teks redup (pengganti style inline) */
+.text-mut {
+  color: var(--mut);
+}
+
+/* ----- Judul bagian dan teks pengantar ----- */
+.sec {
+  padding: 36px 0;
+}
+
+.sec h2 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  margin-bottom: 8px;
+}
+
+.lead {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--mut);
+  margin: 0 0 24px;
+  max-width: 56ch;
+}
+
+/* ----- Header dan navbar (menempel di atas saat scroll) ----- */
+.site-header {
   position: sticky;
   top: env(safe-area-inset-top, 0px);
-  z-index: 5;
+  z-index: 1030;
   background: var(--bg);
   border-bottom: 1px solid var(--line);
 }
 
-.bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 20px;
-  max-width: 1040px;
-  margin: 0 auto;
+.navbar {
+  --bs-navbar-padding-y: .75rem;
+  --bs-navbar-toggler-border-color: var(--line);
 }
 
 .logo {
@@ -125,113 +146,84 @@ header {
   padding: 0;
 }
 
-/* ----- Navigasi ----- */
-nav {
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
+.navbar-nav {
+  --bs-nav-link-color: var(--mut);
+  --bs-nav-link-hover-color: var(--ink);
+  --bs-nav-link-font-size: .95rem;
+  --bs-nav-link-font-weight: 600;
 }
 
-nav button {
-  background: none;
-  border: 0;
-  color: var(--mut);
-  font: 600 .95rem Figtree, sans-serif;
-  padding: 8px 12px;
-  border-radius: 999px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-/* menu yang sedang aktif */
-nav button[aria-current=page] {
+/* menu yang sedang aktif (ditandai script.js lewat aria-current="page") */
+.navbar .nav-link[aria-current=page] {
   background: var(--ice);
   color: var(--ink);
 }
 
-/* lencana jumlah item di tombol Keranjang */
-.cartbtn b {
-  display: inline-grid;
-  place-items: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 5px;
-  border-radius: 999px;
+/* lencana jumlah item di menu Keranjang */
+#cc {
   background: var(--gl);
   color: var(--bt);
-  font-size: .75rem;
-  margin-left: 4px;
 }
 
-/* ----- Tombol ----- */
-.btn {
-  display: inline-block;
-  background: var(--gl);
-  color: var(--bt);
-  text-decoration: none;
-  font-weight: 600;
-  padding: 11px 20px;
-  border-radius: 999px;
-  border: 0;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.btn:hover {
-  background: var(--gl2);
+/* ----- Tombol (Bootstrap .btn diberi warna tema) ----- */
+.btn-primary {
+  --bs-btn-color: var(--bt);
+  --bs-btn-bg: var(--gl);
+  --bs-btn-border-color: var(--gl);
+  --bs-btn-hover-color: var(--bt);
+  --bs-btn-hover-bg: var(--gl2);
+  --bs-btn-hover-border-color: var(--gl2);
+  --bs-btn-active-color: var(--bt);
+  --bs-btn-active-bg: var(--gl2);
+  --bs-btn-active-border-color: var(--gl2);
+  --bs-btn-disabled-color: var(--bt);
+  --bs-btn-disabled-bg: var(--gl);
+  --bs-btn-disabled-border-color: var(--gl);
+  --bs-btn-font-weight: 600;
 }
 
 /* tombol berbingkai (sekunder) */
-.btn.alt {
-  background: transparent;
-  color: var(--ink);
-  border: 2px solid var(--gl);
+.btn-alt {
+  --bs-btn-color: var(--ink);
+  --bs-btn-border-color: var(--gl);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-hover-bg: var(--ice);
+  --bs-btn-hover-border-color: var(--gl);
+  --bs-btn-active-color: var(--ink);
+  --bs-btn-active-bg: var(--ice);
+  --bs-btn-active-border-color: var(--gl);
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-width: 2px;
 }
 
-.btn.alt:hover {
-  background: var(--ice);
+/* tombol kecil bergaya "chip" (filter, ukuran, tombol +/-); .active = terpilih */
+.btn-chip {
+  --bs-btn-color: var(--ink);
+  --bs-btn-bg: var(--card);
+  --bs-btn-border-color: var(--line);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-hover-bg: var(--ice);
+  --bs-btn-hover-border-color: var(--gl);
+  --bs-btn-active-color: var(--bt);
+  --bs-btn-active-bg: var(--gl);
+  --bs-btn-active-border-color: var(--gl);
+  --bs-btn-font-weight: 600;
+  --bs-btn-border-width: 1.5px;
 }
 
-/* tombol nonaktif (misalnya kirim WhatsApp saat keranjang kosong) */
+/* tombol nonaktif (kirim WhatsApp saat keranjang kosong) */
 .btn[aria-disabled=true] {
   opacity: .5;
   pointer-events: none;
 }
 
-/* ----- Halaman (section) dan judul bagian ----- */
-section[hidden] {
-  display: none;
-}
-
-.sec {
-  padding: 36px 0;
-}
-
-.sec h2 {
-  font-size: clamp(1.7rem, 4vw, 2.4rem);
-  margin-bottom: 8px;
-}
-
-.lead {
-  color: var(--mut);
-  margin: 0 0 24px;
-  max-width: 56ch;
-}
-
-/* ----- Grid dan kartu umum ----- */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 18px;
-}
-
+/* ----- Kartu ----- */
 .card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+  --bs-card-bg: var(--card);
+  --bs-card-border-color: var(--line);
+  --bs-card-border-radius: 18px;
+  --bs-card-inner-border-radius: 17px;
+  --bs-card-color: var(--ink);
 }
 
 .card h3 {
@@ -246,17 +238,54 @@ section[hidden] {
 }
 
 /* kartu keunggulan dengan sudut tidak simetris */
-.feat {
+.card.feat {
   border-radius: 6px 26px 6px 26px;
 }
 
-/* ----- Footer ----- */
-footer {
-  border-top: 1px solid var(--line);
-  margin-top: 40px;
-  padding: 24px 0;
+/* ----- Form ----- */
+.form-control {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+}
+
+.form-control:focus {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--gl);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .25);
+}
+
+.form-control::placeholder {
   color: var(--mut);
-  font-size: .9rem;
+  opacity: 1;
+}
+
+/* ----- Tabel ----- */
+.table-responsive {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--ink);
+  --bs-table-border-color: var(--line);
+  min-width: 460px;
+}
+
+.table > :not(caption) > * > * {
+  padding: 12px 16px;
+}
+
+.table thead {
+  --bs-table-bg: var(--ice);
+  --bs-table-color: var(--ink);
+}
+
+.table tbody tr:last-child > * {
+  border-bottom: 0;
 }
 
 /* ----- Notifikasi kecil (toast) di bawah layar ----- */
@@ -273,7 +302,7 @@ footer {
   opacity: 0;
   pointer-events: none;
   transition: opacity .2s;
-  z-index: 9;
+  z-index: 1080;
 }
 
 #toast.on {
@@ -282,21 +311,16 @@ footer {
 
 
 /* ==========================================================================
-   2. HOME
+   3. HOME
    ========================================================================== */
 
-/* ----- Hero (bagian paling atas) ----- */
+/* ----- Hero ----- */
 .hero {
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: 32px;
-  align-items: center;
   padding: 56px 0 40px;
 }
 
 .hero h1 {
   font-size: clamp(2.4rem, 6vw, 4.2rem);
-  font-weight: 800;
   letter-spacing: -.02em;
 }
 
@@ -305,12 +329,6 @@ footer {
   color: var(--mut);
   max-width: 34ch;
   margin: 18px 0 26px;
-}
-
-.cta {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 /* ----- Tumpukan kubus es (hiasan hero) ----- */
@@ -369,6 +387,17 @@ footer {
   }
 }
 
+/* tampilan HP */
+@media (max-width: 767.98px) {
+  .hero {
+    padding-top: 32px;
+  }
+
+  .pile {
+    height: 240px;
+  }
+}
+
 /* ----- Ulasan pelanggan ----- */
 .quote p {
   color: var(--ink);
@@ -379,67 +408,39 @@ footer {
   color: var(--mut);
 }
 
-/* ----- FAQ (pertanyaan umum) ----- */
-details {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 10px;
+/* ----- FAQ (Bootstrap accordion) ----- */
+#faq-section {
+  scroll-margin-top: 90px; /* supaya judul tidak tertutup header saat dituju dari footer */
 }
 
-summary {
+.accordion {
+  --bs-accordion-bg: var(--card);
+  --bs-accordion-color: var(--ink);
+  --bs-accordion-border-color: var(--line);
+  --bs-accordion-btn-color: var(--ink);
+  --bs-accordion-btn-bg: var(--card);
+  --bs-accordion-active-color: var(--ink);
+  --bs-accordion-active-bg: var(--ice);
+  --bs-accordion-body-padding-y: 14px;
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .25);
+}
+
+.accordion-header {
+  font-family: var(--bs-body-font-family);
   font-weight: 600;
-  cursor: pointer;
 }
 
-details p {
-  margin: 10px 0 0;
+.accordion-body {
   color: var(--mut);
-}
-
-/* ----- Tampilan HP: hero jadi satu kolom ----- */
-@media (max-width: 760px) {
-  .hero {
-    grid-template-columns: 1fr;
-    padding-top: 32px;
-  }
-
-  .pile {
-    height: 240px;
-  }
 }
 
 
 /* ==========================================================================
-   3. KATALOG
+   4. KATALOG
    ========================================================================== */
 
-/* ----- Filter jenis es dan chip ukuran ----- */
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-
-.filters button,
-.chip {
-  font: 600 .9rem Figtree, sans-serif;
-  border: 1.5px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
-  border-radius: 999px;
-  padding: 7px 14px;
-  cursor: pointer;
-}
-
-/* filter / ukuran yang sedang dipilih */
-.filters button[aria-pressed=true],
-.chip.on {
-  background: var(--gl);
-  border-color: var(--gl);
-  color: var(--bt);
+.search {
+  max-width: 360px;
 }
 
 /* ----- Ilustrasi bentuk es di kartu produk ----- */
@@ -488,75 +489,14 @@ details p {
   box-shadow: none;
 }
 
-/* ----- Pilihan ukuran dan baris harga + tombol Tambah ----- */
-.chips {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-
-.buy {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
+/* ----- Harga + tombol Tambah ----- */
 .buy strong {
   font: 800 1.3rem "Bricolage Grotesque", sans-serif;
 }
 
-.buy .btn {
-  padding: 9px 18px;
-}
-
-/* ----- Tabel harga grosir ----- */
-.tw {
-  overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--card);
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 460px;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--line);
-}
-
-tr:last-child td {
-  border-bottom: 0;
-}
-
-th {
-  background: var(--ice);
-}
-
-/* ----- Kolom pencarian ----- */
-.search {
-  width: 100%;
-  max-width: 360px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1.5px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
-  font: inherit;
-  margin-bottom: 14px;
-}
-
 
 /* ==========================================================================
-   4. CARA PESAN
+   5. CARA PESAN
    ========================================================================== */
 
 /* ----- Daftar langkah bernomor ----- */
@@ -590,88 +530,97 @@ ol.steps li::before {
   font-weight: 800;
 }
 
-/* ----- Tata letak dua kolom (langkah + kartu kontak) ----- */
-.two {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-@media (max-width: 760px) {
-  .two {
-    grid-template-columns: 1fr;
-  }
-}
-
 
 /* ==========================================================================
-   5. KERANJANG
+   6. KERANJANG
    ========================================================================== */
 
-/* ----- Baris item di keranjang ----- */
-.row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  flex-wrap: wrap;
-}
-
-.row .nm {
+.cart-row .nm {
   flex: 1 1 180px;
 }
 
 /* tombol tambah / kurangi jumlah */
-.qty {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.qty button {
+.qty .btn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
+  padding: 0;
+  line-height: 1;
   font-size: 1.1rem;
-  cursor: pointer;
 }
 
 /* tombol hapus item */
-.rm {
-  background: none;
-  border: 0;
-  color: var(--mut);
-  text-decoration: underline;
-  cursor: pointer;
-  font: inherit;
+.btn.rm {
+  --bs-btn-color: var(--mut);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-active-color: var(--ink);
+  --bs-btn-padding-y: 0;
+  --bs-btn-padding-x: 0;
 }
 
-/* ----- Total harga ----- */
+/* total harga */
 .total {
-  display: flex;
-  justify-content: space-between;
   font: 800 1.4rem "Bricolage Grotesque", sans-serif;
-  padding: 16px 0;
 }
 
-/* ----- Form data pemesan ----- */
-.fld {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 16px;
+
+/* ==========================================================================
+   7. FOOTER (selalu gelap, di mode terang maupun gelap)
+   ========================================================================== */
+
+.site-footer {
+  --ft-text: #a9cbd6;
+  --ft-head: #E6F5F8;
+  --ft-link: #7fc4d8;
+  background: #062028;
+  color: var(--ft-text);
+  border-top: 3px solid #1F7F9C;
+  margin-top: 48px;
 }
 
-.fld input,
-.fld textarea {
-  padding: 11px 14px;
-  border-radius: 12px;
-  border: 1.5px solid var(--line);
-  background: var(--card);
-  color: var(--ink);
-  font: inherit;
-  width: 100%;
+.footer-brand {
+  font: 800 1.5rem "Bricolage Grotesque", sans-serif;
+  color: var(--ft-head);
+}
+
+.footer-desc {
+  margin: 8px 0 16px;
+  max-width: 36ch;
+  font-size: .95rem;
+}
+
+.footer-address {
+  font-size: .9rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.footer-address strong {
+  color: var(--ft-head);
+}
+
+.footer-title {
+  font: 800 .95rem "Bricolage Grotesque", sans-serif;
+  color: var(--ft-head);
+  margin-bottom: 12px;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.site-footer a {
+  color: var(--ft-link);
+  text-decoration: none;
+  font-size: .9rem;
+}
+
+.site-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  color: #8fb3bf;
+  font-size: .8rem;
 }

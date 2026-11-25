@@ -1,12 +1,21 @@
 /* ==========================================================================
-   TEFA Ice Tube - script.js
+   TEFA Ice Tube (versi Bootstrap) - script.js
+
+   Logika sama seperti versi sebelumnya. Perbedaannya hanya markup yang
+   dihasilkan (memakai kelas Bootstrap) dan beberapa tambahan:
+   - tema terang/gelap mengikuti perangkat
+   - menu HP menutup otomatis setelah dipilih
+   - tautan footer bisa menggulung ke bagian tertentu (data-scroll)
+   - halaman baru: "syarat"
 
    Daftar isi:
-   1. UMUM     : fungsi bantu, notifikasi, pindah halaman
+   1. UMUM     : fungsi bantu, notifikasi, tema, pindah halaman
    2. KATALOG  : data produk, filter, pencarian, kartu produk
    3. KERANJANG: isi keranjang, jumlah, total, penyimpanan, pesan WhatsApp
    4. MULAI    : menampilkan halaman pertama saat dibuka
    ========================================================================== */
+
+
 /* ==========================================================================
    1. UMUM
    ========================================================================== */
@@ -35,23 +44,38 @@ function toast(m) {
   }, 1600);
 }
 
-/* show(id): tampilkan satu halaman (home / katalog / pesan / keranjang)
+/* Tema: kalau pengaturan terang/gelap perangkat berubah saat halaman terbuka,
+   atribut data-bs-theme ikut berubah (nilai awalnya diatur di <head> index.html) */
+var mq = window.matchMedia("(prefers-color-scheme: dark)");
+if (mq.addEventListener) {
+  mq.addEventListener("change", function (e) {
+    document.documentElement.setAttribute("data-bs-theme", e.matches ? "dark" : "light");
+  });
+}
+
+/* show(id): tampilkan satu halaman (home / katalog / pesan / keranjang / syarat)
    dan sembunyikan halaman lainnya.
    - id yang tidak dikenal otomatis diarahkan ke "home"
    - menu navigasi yang aktif diberi tanda aria-current="page"
+   - menu di layar HP ditutup otomatis (Bootstrap Collapse)
    - alamat URL diperbarui (#id) dan layar kembali ke atas */
 function show(id) {
-  var S = ["home", "katalog", "pesan", "keranjang"];
+  var S = ["home", "katalog", "pesan", "keranjang", "syarat"];
   if (S.indexOf(id) < 0) id = "home";
 
   S.forEach(function (s) {
     $(s).hidden = s !== id;
   });
 
-  document.querySelectorAll("nav button").forEach(function (b) {
+  document.querySelectorAll("nav button[data-go]").forEach(function (b) {
     if (b.dataset.go === id) b.setAttribute("aria-current", "page");
     else b.removeAttribute("aria-current");
   });
+
+  var menu = $("menu");
+  if (menu && menu.classList.contains("show") && window.bootstrap) {
+    bootstrap.Collapse.getOrCreateInstance(menu).hide();
+  }
 
   try {
     history.replaceState(null, "", "#" + id);
@@ -61,10 +85,20 @@ function show(id) {
 }
 
 /* Klik pada elemen mana pun yang punya atribut data-go="nama-halaman"
-   (logo, menu, tombol) akan membuka halaman tersebut */
+   (logo, menu, tombol, tautan footer) akan membuka halaman tersebut.
+   - preventDefault: mencegah tautan <a href="#..."> melompat sendiri
+   - data-scroll="id-elemen": setelah pindah halaman, gulung ke elemen itu */
 document.addEventListener("click", function (e) {
   var g = e.target.closest("[data-go]");
-  if (g) show(g.dataset.go);
+  if (!g) return;
+
+  e.preventDefault();
+  show(g.dataset.go);
+
+  if (g.dataset.scroll) {
+    var target = $(g.dataset.scroll);
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+  }
 });
 
 
@@ -94,28 +128,32 @@ var sel = {}, cur = "semua", qry = "";
 
 /* draw(): gambar ulang filter dan kartu produk di halaman katalog.
    Produk disaring berdasarkan filter (cur) dan kata kunci (qry).
-   Kalau tidak ada yang cocok, tampil pesan "Tidak ada es yang cocok". */
+   Kalau tidak ada yang cocok, tampil pesan "Tidak ada es yang cocok".
+   Kelas "active" (Bootstrap) menandai filter dan ukuran yang sedang dipilih. */
 function draw() {
-  /* tombol filter; yang aktif ditandai aria-pressed="true" */
+  /* tombol filter */
   $("filters").innerHTML = F.map(function (x) {
-    return '<button aria-pressed="' + (x[0] === cur) + '" data-f="' + x[0] + '">' + x[1] + '</button>';
+    return '<button class="btn btn-sm btn-chip rounded-pill' + (x[0] === cur ? ' active' : '') + '" aria-pressed="' + (x[0] === cur) + '" data-f="' + x[0] + '">' + x[1] + '</button>';
   }).join("");
 
-  /* kartu produk */
+  /* kartu produk (satu kolom grid Bootstrap per produk) */
   var h = P.map(function (p, i) {
     if (cur !== "semua" && p.t !== cur) return "";
     if (qry && (p.n + " " + p.t).toLowerCase().indexOf(qry) < 0) return "";
 
     var k = sel[i] || 0; /* ukuran yang sedang dipilih (bawaan: yang pertama) */
 
-    return '<article class="card" data-i="' + i + '"><div class="shape s-' + p.s + '" aria-hidden="true"></div><h3>' + p.n + '</h3><p>' + p.d + '</p><div class="chips">' +
+    return '<div class="col"><article class="card h-100" data-i="' + i + '"><div class="card-body d-flex flex-column">' +
+      '<div class="shape s-' + p.s + '" aria-hidden="true"></div><h3>' + p.n + '</h3><p>' + p.d + '</p>' +
+      '<div class="chips d-flex flex-wrap gap-2 mb-3">' +
       p.o.map(function (o, j) {
-        return '<button class="chip' + (j === k ? ' on' : '') + '" data-j="' + j + '">' + o[0] + '</button>';
+        return '<button class="btn btn-sm btn-chip rounded-pill chip' + (j === k ? ' active' : '') + '" data-j="' + j + '">' + o[0] + '</button>';
       }).join("") +
-      '</div><div class="buy"><strong>' + rp(p.o[k][1]) + '</strong><button class="btn" data-add>Tambah</button></div></article>';
+      '</div><div class="buy mt-auto d-flex align-items-center justify-content-between gap-2"><strong>' + rp(p.o[k][1]) + '</strong><button class="btn btn-primary rounded-pill" data-add>Tambah</button></div>' +
+      '</div></article></div>';
   }).join("");
 
-  $("grid").innerHTML = h || '<p class="lead">Tidak ada es yang cocok. Coba kata kunci lain atau pilih Semua.</p>';
+  $("grid").innerHTML = h || '<div class="col-12"><p class="lead">Tidak ada es yang cocok. Coba kata kunci lain atau pilih Semua.</p></div>';
 }
 
 /* Penanganan klik di katalog (satu listener untuk semua tombol):
@@ -198,9 +236,16 @@ function drawCart() {
     var x = line(c);
     t += x.s;
     n += c.q;
-    return '<div class="row"><div class="nm"><strong>' + x.n + '</strong><br><span style="color:var(--mut)">' + rp(x.u) + ' per paket</span></div><div class="qty"><button data-q="-1" data-k="' + k + '" aria-label="Kurangi">−</button><span>' + c.q + '</span><button data-q="1" data-k="' + k + '" aria-label="Tambah">+</button></div><strong>' + rp(x.s) + '</strong><button class="rm" data-rm="' + k + '">Hapus</button></div>';
+    return '<div class="cart-row d-flex align-items-center flex-wrap gap-3 py-3 border-bottom">' +
+      '<div class="nm"><strong>' + x.n + '</strong><br><span class="text-mut">' + rp(x.u) + ' per paket</span></div>' +
+      '<div class="qty d-flex align-items-center gap-2">' +
+      '<button class="btn btn-chip btn-sm rounded-circle" data-q="-1" data-k="' + k + '" aria-label="Kurangi">−</button>' +
+      '<span>' + c.q + '</span>' +
+      '<button class="btn btn-chip btn-sm rounded-circle" data-q="1" data-k="' + k + '" aria-label="Tambah">+</button></div>' +
+      '<strong>' + rp(x.s) + '</strong>' +
+      '<button class="btn btn-link rm text-decoration-underline" data-rm="' + k + '">Hapus</button></div>';
   }).join("") :
-    '<p class="lead">Keranjang masih kosong. Pilih es di katalog untuk mulai.</p><button class="btn" data-go="katalog">Buka katalog</button>';
+    '<p class="lead">Keranjang masih kosong. Pilih es di katalog untuk mulai.</p><button class="btn btn-primary rounded-pill" data-go="katalog">Buka katalog</button>';
 
   $("cf").hidden = !cart.length; /* form data pemesan hanya tampil kalau ada item */
   $("ct").textContent = rp(t);   /* total harga */
@@ -243,10 +288,13 @@ document.addEventListener("click", function (e) {
     drawCart();
   }
 });
+
 /* Kolom nama, alamat, dan catatan: setiap ketikan memperbarui isi pesan WhatsApp */
 ["nm", "ad", "nt"].forEach(function (id) {
   $(id).addEventListener("input", link);
 });
+
+
 /* ==========================================================================
    4. MULAI
    Dijalankan sekali saat halaman dibuka:
